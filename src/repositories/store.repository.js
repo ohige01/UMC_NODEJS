@@ -1,5 +1,28 @@
 import { pool } from "../db.config.js";
 
+// 가게 조회
+export const getStore = async (storeId) => {
+  const conn = await pool.getConnection();
+
+  try {
+    const [store] = await pool.query(`SELECT * FROM store WHERE id = ?;`, storeId);
+
+    console.log(store);
+
+    if (store.length == 0) {
+      return null;
+    }
+
+    return store;
+  } catch (err) {
+    throw new Error(
+      `오류가 발생했어요. 요청 파라미터를 확인해주세요. (${err})`
+    );
+  } finally {
+    conn.release();
+  }
+};
+
 //가게 추가
 export const addStore = async (data) => {
     const conn = await pool.getConnection();
@@ -50,25 +73,24 @@ export const addStore = async (data) => {
     }
 }
 
-// 가게 조회
-export const getStore = async (storeId) => {
+//가게 평점 계산
+export const calStoreScore = async (storeId) => {
   const conn = await pool.getConnection();
 
   try {
-    const [store] = await pool.query(`SELECT * FROM store WHERE id = ?;`, storeId);
+    //점수 계산
+    const [score] = await pool.query(`SELECT AVG(score) AS score_avg FROM review WHERE store_id=?;`, storeId);
 
-    console.log(store);
-
-    if (store.length == 0) {
-      return null;
-    }
-
-    return store;
+    //계산한 점수 입력
+    await pool.query(`UPDATE store SET score = ? WHERE id = ?;`, [score[0].score_avg, storeId]);
+    
+    console.log(score[0].score_avg);
+    return;
   } catch (err) {
     throw new Error(
       `오류가 발생했어요. 요청 파라미터를 확인해주세요. (${err})`
     );
   } finally {
     conn.release();
-  }
+  }  
 };

@@ -1,5 +1,5 @@
 import { getReview, writeReview, writeReviewImg } from "../repositories/review.repsitory.js";
-import { addStore, getStore } from "../repositories/store.repository.js";
+import { addStore, calStoreScore, getStore } from "../repositories/store.repository.js";
 import { getUser } from "../repositories/user.repository.js";
 
 export const storeAdd = async (data) => {
@@ -34,6 +34,8 @@ export const reviewWrite = async (data) => {
         text: data.text
     });
 
+    await calStoreScore(store[0].id);
+    
     for (const reviewImg of data.image) {
         await writeReviewImg({
             storeId: store.id,
