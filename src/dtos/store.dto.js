@@ -19,3 +19,14 @@ export const requestReviewWrite = (body) => {
         reviewImg: body.reviewImg
     }
 };
+
+//StoreMissionAdd Request Dto
+export const requestStoreMisAdd = (body) => {
+    const deadline = new Date(body.deadline);
+    return{
+        storeId: body.storeId,
+        missionSpec: body.missionSpec,
+        reward: body.reward,
+        deadline: deadline
+    }
+}
