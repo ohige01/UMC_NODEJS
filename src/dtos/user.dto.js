@@ -20,3 +20,10 @@ export const responseFromUser = ( user, preferences ) => {
         user, preferences
     };
 };
+//addUserMis Request Dto
+export const requestUserMisAdd = (body) => {
+  return {
+    userId: body.userId,
+    missionId: body.missionId
+  };
+};
