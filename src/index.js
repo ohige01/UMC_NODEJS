@@ -1,7 +1,7 @@
 import dotenv from "dotenv";    //.env 관리 모듈
 import cors from "cors"   //cors 관리 모듈
 import express from "express";
-import { handleUserSignUp } from "./controllers/user.controller.js";
+import { handleUserMisAdd, handleUserSignUp } from "./controllers/user.controller.js";
 import { handleReviewWrite, handleStoreAdd, handleStoreMisAdd } from "./controllers/store.controller.js";
 
 dotenv.config();    //config()를 호출해 env에 있는 내용 접근
@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 //url route
 //user
 app.post("/api/v1/users/signup", handleUserSignUp);
+app.post("/api/v1/users/missions", handleUserMisAdd);
 
 //store
 app.post("/api/v1/stores", handleStoreAdd);
