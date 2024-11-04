@@ -37,21 +37,21 @@ export const addStore = async (data) => {
 
 //가게 평점 계산
 export const calStoreScore = async (storeId) => {
-  const conn = await pool.getConnection();
+  //점수 계산
+  const cal = await prisma.review.groupBy({
+    by: ['storeId'],
+    where: { storeId: storeId },
+    _avg: { score: true }
+  });
+  const score_avg = cal[0]._avg.score;
 
-  try {
-    //점수 계산
-    const [score] = await pool.query(`SELECT AVG(score) AS score_avg FROM review WHERE store_id=?;`, storeId);
-
-    //계산한 점수 입력
-    await pool.query(`UPDATE store SET score = ? WHERE id = ?;`, [score[0].score_avg, storeId]);
-    
-    return;
-  } catch (err) {
-    throw new Error(
-      `오류가 발생했어요. 요청 파라미터를 확인해주세요. (${err})`
-    );
-  } finally {
-    conn.release();
-  }  
+  //계산한 점수 입력
+  await prisma.store.update({
+    where: {
+      id: storeId,
+    },
+    data: {
+      score: score_avg,
+    },
+  }) 
 };

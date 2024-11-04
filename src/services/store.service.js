@@ -31,21 +31,23 @@ export const reviewWrite = async (data) => {
         throw new Error("존재하지 않은 가게입니다. req:" + data.storeId);
         
     const reviewId = await writeReview({
-        storeId: store[0].id,
+        storeId: store.id,
         userId: user.id,
         rate: data.rate,
         text: data.text
     });
 
-    await calStoreScore(store[0].id);
+    await calStoreScore(store.id);
     
-    for (const reviewImg of data.reviewImg) {
-        await writeReviewImg({
-            storeId: store[0].id,
-            reviewId: reviewId,
-            reviewImg: reviewImg
-        });
-    }
+    //이미지가 없을 때는 미실행
+    if(data.reviewImg != null)
+        for (const reviewImg of data.reviewImg) {
+            await writeReviewImg({
+                storeId: store.id,
+                reviewId: reviewId,
+                reviewImg: reviewImg
+            });
+        }
 
     const review = await getReview(reviewId);
 
