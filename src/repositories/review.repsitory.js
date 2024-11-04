@@ -6,9 +6,7 @@ export const getReview = async (reviewId) => {
   
     try {
       const [review] = await pool.query(`SELECT * FROM review WHERE id = ?;`, reviewId);
-  
-      console.log(review);
-  
+    
       if (review.length == 0) {
         return null;
       }

@@ -32,16 +32,16 @@ export const reviewWrite = async (data) => {
         
     const reviewId = await writeReview({
         storeId: store[0].id,
-        userId: user[0].id,
+        userId: user.id,
         rate: data.rate,
         text: data.text
     });
 
     await calStoreScore(store[0].id);
     
-    for (const reviewImg of data.image) {
+    for (const reviewImg of data.reviewImg) {
         await writeReviewImg({
-            storeId: store.id,
+            storeId: store[0].id,
             reviewId: reviewId,
             reviewImg: reviewImg
         });

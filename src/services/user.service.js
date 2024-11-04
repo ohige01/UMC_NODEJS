@@ -46,7 +46,7 @@ export const userMisAdd = async (data) => {
       throw new Error("존재하지 않은 미션입니다. req:" + data.missionId);
 
   const userMisId = await addUserMis({
-    userId: user[0].id,
+    userId: user.id,
     missionId: storeMis[0].id
   });
 

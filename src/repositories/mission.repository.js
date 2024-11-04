@@ -6,9 +6,7 @@ export const getStoreMission = async (missionId) => {
   
     try {
       const [mission] = await pool.query(`SELECT * FROM mission WHERE id = ?;`, missionId);
-  
-      console.log(mission);
-  
+    
       if (mission.length == 0) {
         return null;
       }
@@ -54,8 +52,6 @@ export const getUserMission_MissionID = async (missionId) => {
 
   try {
     const [mission] = await pool.query(`SELECT * FROM member_mission WHERE id = ?;`, missionId);
-
-    console.log(mission);
 
     if (mission.length == 0) {
       return null;
