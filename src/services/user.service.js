@@ -1,5 +1,5 @@
 import { responseFromUser } from "../dtos/user.dto.js";
-import { addUserMis, getStoreMission, getUserMission_MissionID } from "../repositories/mission.repository.js";
+import { addUserMis, getStoreMission, getUserMission_MissionID, getUserMissionAll } from "../repositories/mission.repository.js";
 import {
   addUser,
   getUser,
@@ -53,4 +53,16 @@ export const userMisAdd = async (data) => {
   const userMis = await getUserMission_MissionID(userMisId);
 
   return userMis;
+};
+
+//유저 미션 조회 
+export const listUserMissions = async (userId, cursor) => {
+  //유효한 가게 아이디인지 판별
+  const user = await getUser(userId);
+  if(user == null)
+      throw new Error("존재하지 않은 가게입니다. req:" + userId);
+
+  //미션 조회
+  const missions = await getUserMissionAll(userId, cursor);
+  return missions;
 };
