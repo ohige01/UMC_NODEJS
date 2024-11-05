@@ -19,6 +19,19 @@ export const getReviewToStoreId = async (storeId, cursor) => {
   return reviews;
 };
 
+//리뷰 조회(userId)
+export const getReviewToUserId = async (userId, cursor) => {
+  //reviewId를 index로 설정
+  const reviews = await prisma.review.findMany({
+    select: { id: true, body: true, store: true, member: true, score: true },
+    where: { memberId: userId, id: { gt: cursor } },
+    orderBy: { id: "asc" },
+    take: 5,
+  });
+
+  return reviews;
+};
+
 //리뷰 작성
 export const writeReview = async (data) =>{
   const review = await prisma.review.create({ data: {

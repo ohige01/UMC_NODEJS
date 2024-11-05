@@ -1,6 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import { bodyToUser, requestUserMisAdd } from "../dtos/user.dto.js";
 import { userMisAdd, userSignUp } from "../services/user.service.js";
+import { listUserReviews } from "../services/review.service.js";
+import { responseFromReviews } from "../dtos/review.dto.js";
 
 //회원 가입
 export const handleUserSignUp = async (req, res, next) => {
@@ -17,4 +19,15 @@ export const handleUserMisAdd = async (req, res) => {
 
   const userMis = await userMisAdd(requestUserMisAdd(req.body));
   res.status(StatusCodes.OK).json({ result: userMis }); 
+};
+
+//유저 리뷰 조회
+export const handleListUserReviews = async (req, res, next) => {
+  const reviews = await listUserReviews(
+    parseInt(req.params.userId),
+    //cursor 미설정시 0 전달
+    typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+  );
+
+  res.status(StatusCodes.OK).json({ result: responseFromReviews(reviews) });
 };

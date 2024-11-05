@@ -1,4 +1,4 @@
-import { getReview, getReviewToStoreId, writeReview, writeReviewImg } from "../repositories/review.repsitory.js";
+import { getReview, getReviewToStoreId, getReviewToUserId, writeReview, writeReviewImg } from "../repositories/review.repsitory.js";
 import { calStoreScore, getStore } from "../repositories/store.repository.js";
 import { getUser } from "../repositories/user.repository.js";
 
@@ -39,5 +39,11 @@ export const reviewWrite = async (data) => {
 //가게 리뷰 조회 
 export const listStoreReviews = async (storeId, cursor) => {
     const reviews = await getReviewToStoreId(storeId, cursor);
+    return reviews;
+};
+
+//유저 리뷰 조회 
+export const listUserReviews = async (userId, cursor) => {
+    const reviews = await getReviewToUserId(userId, cursor);
     return reviews;
 };
