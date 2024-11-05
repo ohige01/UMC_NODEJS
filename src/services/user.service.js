@@ -16,8 +16,8 @@ export const userSignUp = async (data) => {
     gender: data.gender,
     birth: data.birth,
     address: data.address,
-    detailAddress: data.detailAddress,
-    phoneNumber: data.phoneNumber
+    specAddress: data.detailAddress,
+    phoneNum: data.phoneNumber
   });
 
   if (joinUserId === null) {
@@ -46,8 +46,8 @@ export const userMisAdd = async (data) => {
       throw new Error("존재하지 않은 미션입니다. req:" + data.missionId);
 
   const userMisId = await addUserMis({
-    userId: user[0].id,
-    missionId: storeMis[0].id
+    userId: user.id,
+    missionId: storeMis.id
   });
 
   const userMis = await getUserMission_MissionID(userMisId);

@@ -15,10 +15,16 @@ export const bodyToUser = (body) => {
     };
   };
 //signUp Response Dto
-export const responseFromUser = ( user, preferences ) => {
-    return{
-        user, preferences
-    };
+export const responseFromUser = ({ user, preferences }) => {
+  const preferFoods = preferences.map(
+    (preference) => preference.foodCategory.name
+  );
+
+  return {
+    email: user.email,
+    name: user.name,
+    preferCategory: preferFoods,
+  };
 };
 //addUserMis Request Dto
 export const requestUserMisAdd = (body) => {
