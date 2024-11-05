@@ -4,7 +4,20 @@ import { prisma } from "../db.config.js"
 export const getReview = async (reviewId) => {
   const review = await prisma.review.findFirstOrThrow({ where: { id: reviewId } });
   return review;
-  };
+};
+
+//리뷰 조회(storeId)
+export const getReviewToStoreId = async (storeId, cursor) => {
+  //reviewId를 index로 설정
+  const reviews = await prisma.review.findMany({
+    select: { id: true, body: true, store: true, member: true, score: true },
+    where: { storeId: storeId, id: { gt: cursor } },
+    orderBy: { id: "asc" },
+    take: 5,
+  });
+
+  return reviews;
+};
 
 //리뷰 작성
 export const writeReview = async (data) =>{

@@ -1,6 +1,8 @@
 import { StatusCodes } from "http-status-codes";
-import { reviewWrite, storeAdd, storeMisAdd } from "../services/store.service.js";
+import { listStoreReviews, reviewWrite } from "../services/review.service.js";
+import { storeAdd, storeMisAdd } from "../services/store.service.js";
 import { bodyToStore, requestReviewWrite, requestStoreMisAdd } from "../dtos/store.dto.js";
+import { responseFromReviews } from "../dtos/review.dto.js";
 
 //가게 추가
 export const handleStoreAdd = async (req, res, next) => {
@@ -24,4 +26,15 @@ export const handleStoreMisAdd = async (req, res) =>{
 
   const mission = await storeMisAdd(requestStoreMisAdd(req.body));
   res.status(StatusCodes.OK).json({ mission: mission });
+};
+
+//가게 리뷰 조회
+export const handleListStoreReviews = async (req, res, next) => {
+  const reviews = await listStoreReviews(
+    parseInt(req.params.storeId),
+    //cursor 미설정시 0 전달
+    typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+  );
+
+  res.status(StatusCodes.OK).json({ result: responseFromReviews(reviews) });
 };
