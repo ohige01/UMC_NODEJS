@@ -1,8 +1,9 @@
 import { StatusCodes } from "http-status-codes";
 import { bodyToUser, requestUserMisAdd } from "../dtos/user.dto.js";
-import { userMisAdd, userSignUp } from "../services/user.service.js";
+import { listUserMissions, userMisAdd, userSignUp } from "../services/user.service.js";
 import { listUserReviews } from "../services/review.service.js";
 import { responseFromReviews } from "../dtos/review.dto.js";
+import { responseFromMissions } from "../dtos/mission.dto.js";
 
 //회원 가입
 export const handleUserSignUp = async (req, res, next) => {
@@ -30,4 +31,15 @@ export const handleListUserReviews = async (req, res, next) => {
   );
 
   res.status(StatusCodes.OK).json({ result: responseFromReviews(reviews) });
+};
+
+//유저 미션 조회
+export const handleListUserMissions = async (req, res, next) => {
+  const missions = await listUserMissions(
+    parseInt(req.params.userId),
+    //cursor 미설정시 0 전달
+    typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+  );
+
+  res.status(StatusCodes.OK).json({ result: responseFromMissions(missions) });
 };
