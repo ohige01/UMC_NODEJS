@@ -47,7 +47,7 @@ export const userMisAdd = async (data) => {
 
   const userMisId = await addUserMis({
     userId: user.id,
-    missionId: storeMis[0].id
+    missionId: storeMis.id
   });
 
   const userMis = await getUserMission_MissionID(userMisId);

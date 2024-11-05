@@ -83,12 +83,12 @@ model Store {
 }
 
 model Mission {
-  id           Int      @id @default(autoincrement())
-  store        Store    @relation(fields: [storeId], references: [id])
-  storeId      Int      @map("store_id")
-  reward       Int      @db.Int
-  deadline     DateTime @db.Date
-  mission_spec String   @db.Text
+  id          Int      @id @default(autoincrement())
+  store       Store    @relation(fields: [storeId], references: [id])
+  storeId     Int      @map("store_id")
+  reward      Int      @db.Int
+  deadline    DateTime @db.Date
+  missionSpec String   @map("mission_spec") @db.Text
 
   memberMissions MemberMission[]
 

@@ -20,7 +20,7 @@ export const writeReview = async (data) =>{
 
 //리뷰 이미지 작성
 export const writeReviewImg = async (data) => {
-  const review_image = await prisma.review_image.create({ data: {
+  const review_image = await prisma.reviewImage.create({ data: {
     reviewId: data.reviewId,
     storeId: data.storeId,
     imageUrl: data.reviewImg

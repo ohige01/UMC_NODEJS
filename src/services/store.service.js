@@ -68,7 +68,7 @@ export const storeMisAdd = async (data) => {
         throw new Error("존재하지 않은 가게입니다. req:" + data.storeId);
 
     const missionId = await addStoreMis({
-        storeId: store[0].id,
+        storeId: store.id,
         missionSpec: data.missionSpec,
         reward: data.reward,
         deadline: data.deadline
