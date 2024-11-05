@@ -1,9 +1,22 @@
 import { prisma } from "../db.config.js"
 
-//가게 미션 조회
+//가게 미션 개별 조회
 export const getStoreMission = async (missionId) => {
   const mission = await prisma.mission.findFirstOrThrow({ where: { id: missionId } });
   return mission;
+};
+
+//가게 미션 전체 조회
+export const getStoreMissionAll = async (storeId, cursor) => {
+  //missionId를 index로 설정
+  const missions = await prisma.mission.findMany({
+    select: { id: true, missionSpec: true, store: true, reward: true, deadline: true },
+    where: { storeId: storeId, id: { gt: cursor } },
+    orderBy: { id: "asc" },
+    take: 5,
+  });
+
+  return missions;
 };
 
 //가게 미션 추가

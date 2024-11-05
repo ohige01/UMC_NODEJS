@@ -2,7 +2,7 @@ import dotenv from "dotenv";    //.env 관리 모듈
 import cors from "cors"   //cors 관리 모듈
 import express from "express";
 import { handleListUserReviews, handleUserMisAdd, handleUserSignUp } from "./controllers/user.controller.js";
-import { handleListStoreReviews, handleReviewWrite, handleStoreAdd, handleStoreMisAdd } from "./controllers/store.controller.js";
+import { handleListStoreMissions, handleListStoreReviews, handleReviewWrite, handleStoreAdd, handleStoreMisAdd } from "./controllers/store.controller.js";
 
 dotenv.config();    //config()를 호출해 env에 있는 내용 접근
 
@@ -29,6 +29,7 @@ app.post("/api/v1/stores", handleStoreAdd);
 app.post("/api/v1/stores/reviews", handleReviewWrite);
 app.post("/api/v1/stores/missions", handleStoreMisAdd);
 app.get("/api/v1/stores/:storeId/reviews", handleListStoreReviews);
+app.get("/api/v1/stores/:storeId/missions", handleListStoreMissions);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

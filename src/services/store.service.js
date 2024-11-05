@@ -1,4 +1,4 @@
-import { addStoreMis, getStoreMission } from "../repositories/mission.repository.js";
+import { addStoreMis, getStoreMission, getStoreMissionAll } from "../repositories/mission.repository.js";
 import { addStore, getStore } from "../repositories/store.repository.js";
 
 //가게 추가
@@ -41,4 +41,16 @@ export const storeMisAdd = async (data) => {
     const mission = await getStoreMission(missionId);
 
     return mission;
+};
+
+//가게 미션 조회 
+export const listStoreMissions = async (storeId, cursor) => {
+    //유효한 가게 아이디인지 판별
+    const store = await getStore(storeId);
+    if(store == null)
+        throw new Error("존재하지 않은 가게입니다. req:" + storeId);
+
+    //미션 조회
+    const missions = await getStoreMissionAll(storeId, cursor);
+    return missions;
 };
