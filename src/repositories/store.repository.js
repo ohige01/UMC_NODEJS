@@ -2,7 +2,7 @@ import { prisma } from "../db.config.js"
 
 // 가게 조회
 export const getStore = async (storeId) => {
-  const store = await prisma.store.findFirstOrThrow({ where: { id: storeId } });
+  const store = await prisma.store.findFirst({ where: { id: storeId } });
   return store;
 };
 

@@ -12,7 +12,7 @@ export const addUser = async (data) => {
 
 // 사용자 정보 얻기
 export const getUser = async (userId) => {
-  const user = await prisma.member.findFirstOrThrow({ where: { id: userId } });
+  const user = await prisma.member.findFirst({ where: { id: userId } });
   return user;
 };
 

@@ -1,4 +1,5 @@
 import { responseFromUser } from "../dtos/user.dto.js";
+import { NotFoundError } from "../error.js";
 import { addUserMis, getStoreMission, getUserMission_MissionID, getUserMissionAll } from "../repositories/mission.repository.js";
 import {
   addUser,
@@ -21,7 +22,7 @@ export const userSignUp = async (data) => {
   });
 
   if (joinUserId === null) {
-    throw new Error("이미 존재하는 이메일입니다.");
+    throw new NotFoundError("이미 존재하는 이메일입니다.");
   }
 
   for (const preference of data.preferences) {
@@ -41,9 +42,9 @@ export const userMisAdd = async (data) => {
   const storeMis = await getStoreMission(data.missionId);
 
   if(user == null)
-    throw new Error("존재하지 않은 유저입니다. req:" + data.userId);
+    throw new NotFoundError("존재하지 않은 유저입니다. req:" + data.userId);
   if(storeMis == null)
-      throw new Error("존재하지 않은 미션입니다. req:" + data.missionId);
+    throw new NotFoundError("존재하지 않은 미션입니다. req:" + data.missionId);
 
   const userMisId = await addUserMis({
     userId: user.id,
@@ -60,7 +61,7 @@ export const listUserMissions = async (userId, cursor) => {
   //유효한 가게 아이디인지 판별
   const user = await getUser(userId);
   if(user == null)
-      throw new Error("존재하지 않은 가게입니다. req:" + userId);
+      throw new NotFoundError("존재하지 않은 가게입니다. req:" + userId);
 
   //미션 조회
   const missions = await getUserMissionAll(userId, cursor);
