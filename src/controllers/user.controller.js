@@ -7,39 +7,51 @@ import { responseFromMissions } from "../dtos/mission.dto.js";
 
 //회원 가입
 export const handleUserSignUp = async (req, res, next) => {
-  console.log("회원가입을 요청했습니다!");
-  console.log("body:", req.body); // 값이 잘 들어오나 확인하기 위한 테스트용
-
-  const user = await userSignUp(bodyToUser(req.body));
-  res.status(StatusCodes.OK).json({ result: user });
+  try {
+    const user = await userSignUp(bodyToUser(req.body));
+    res.status(StatusCodes.OK).success({ result: user });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+  }
 };
 
 //유저 미션 추가
-export const handleUserMisAdd = async (req, res) => {
-  console.log("body:", req.body); // 값이 잘 들어오나 확인하기 위한 테스트용
-
-  const userMis = await userMisAdd(requestUserMisAdd(req.body));
-  res.status(StatusCodes.OK).json({ result: userMis }); 
+export const handleUserMisAdd = async (req, res) => { 
+  try {
+    const userMis = await userMisAdd(requestUserMisAdd(req.body));
+    res.status(StatusCodes.OK).success({ result: userMis });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+  }
 };
 
 //유저 리뷰 조회
 export const handleListUserReviews = async (req, res, next) => {
-  const reviews = await listUserReviews(
-    parseInt(req.params.userId),
-    //cursor 미설정시 0 전달
-    typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
-  );
-
-  res.status(StatusCodes.OK).json({ result: responseFromReviews(reviews) });
+  try {
+    const reviews = await listUserReviews(
+      parseInt(req.params.userId),
+      //cursor 미설정시 0 전달
+      typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+    );
+  
+    res.status(StatusCodes.OK).success({ result: responseFromReviews(reviews) });
+  } catch (error) {
+    console.log(error.message)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+  }
 };
 
 //유저 미션 조회
 export const handleListUserMissions = async (req, res, next) => {
-  const missions = await listUserMissions(
-    parseInt(req.params.userId),
-    //cursor 미설정시 0 전달
-    typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
-  );
-
-  res.status(StatusCodes.OK).json({ result: responseFromMissions(missions) });
+  try {
+    const missions = await listUserMissions(
+      parseInt(req.params.userId),
+      //cursor 미설정시 0 전달
+      typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+    );
+  
+    res.status(StatusCodes.OK).success({ result: responseFromMissions(missions) });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+  }
 };

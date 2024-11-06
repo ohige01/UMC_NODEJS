@@ -1,8 +1,9 @@
 import { prisma } from "../db.config.js"
+import { InvalidMission } from "../error.js";
 
 //가게 미션 개별 조회
 export const getStoreMission = async (missionId) => {
-  const mission = await prisma.mission.findFirstOrThrow({ where: { id: missionId } });
+  const mission = await prisma.mission.findFirst({ where: { id: missionId } });
   return mission;
 };
 
@@ -33,7 +34,7 @@ export const addStoreMis = async (data) => {
 
 //유저 미션 개별 조회
 export const getUserMission_MissionID = async (missionId) => {
-  const mission = await prisma.memberMission.findFirstOrThrow({ where: { id: missionId } });
+  const mission = await prisma.memberMission.findFirst({ where: { id: missionId } });
   return mission;
 };
 
@@ -67,7 +68,7 @@ export const addUserMis = async (data) => {
     }
   });
   if(confirm!=null)
-    throw new Error("도전 중인 미션입니다.");
+    throw new InvalidMission("도전 중인 미션입니다.");
 
   //미션 추가
   const mission = await prisma.memberMission.create({
