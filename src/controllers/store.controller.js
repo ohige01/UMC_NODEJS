@@ -7,6 +7,26 @@ import { responseFromMissions } from "../dtos/mission.dto.js";
 
 //가게 추가
 export const handleStoreAdd = async (req, res, next) => {
+  /*
+    #swagger.tags = ['Stores'];
+    #swagger.summary = '가게 추가 API';
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              name: { type: "string" },
+              location: { type: "string" },
+              infoImg: { type: "string" },
+              category: { type: "array", items: { type: "string" } }
+            }
+          }
+        }
+      }
+    };
+  */
   try {
     const store = await storeAdd(bodyToStore(req.body));
     res.status(StatusCodes.OK).success({ result: store });
@@ -17,6 +37,27 @@ export const handleStoreAdd = async (req, res, next) => {
 
 //가게 리뷰 작성
 export const handleReviewWrite = async (req, res) =>{
+  /*
+    #swagger.tags = ['Stores'];
+    #swagger.summary = '가게 리뷰 작성 API';
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              storeId: { type: "number" },
+              userId: { type: "number" },
+              rate: { type: "number", format: "float" },
+              text: { type: "string" },
+              reviewImg: { type: "string" }
+            }
+          }
+        }
+      }
+    };
+  */
   try {
     const review = await reviewWrite(requestReviewWrite(req.body));
     res.status(StatusCodes.OK).success({ result: review });
@@ -27,6 +68,26 @@ export const handleReviewWrite = async (req, res) =>{
 
 //가게 미션 추가
 export const handleStoreMisAdd = async (req, res) =>{
+  /*
+    #swagger.tags = ['Stores'];
+    #swagger.summary = '가게 미션 추가 API';
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              storeId: { type: "number" },
+              missionSpec: { type: "string" },
+              reward: { type: "number" },
+              deadline: { type: "string", format: "date" }
+            }
+          }
+        }
+      }
+    };
+  */
   try {
     const mission = await storeMisAdd(requestStoreMisAdd(req.body));
     res.status(StatusCodes.OK).success({ mission: mission });
@@ -37,6 +98,42 @@ export const handleStoreMisAdd = async (req, res) =>{
 
 //가게 리뷰 조회
 export const handleListStoreReviews = async (req, res, next) => {
+  /*
+    #swagger.tags = ['Stores'];
+    #swagger.summary = '상점 리뷰 목록 조회 API';
+    #swagger.responses[200] = {
+      description: "상점 리뷰 목록 조회 성공 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "SUCCESS" },
+              error: { type: "object", nullable: true, example: null },
+              success: {
+                type: "object",
+                properties: {
+                  data: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: { type: "number" },
+                        store: { type: "object", properties: { id: { type: "number" }, name: { type: "string" } } },
+                        user: { type: "object", properties: { id: { type: "number" }, email: { type: "string" }, name: { type: "string" } } },
+                        content: { type: "string" }
+                      }
+                    }
+                  },
+                  pagination: { type: "object", properties: { cursor: { type: "number", nullable: true } }}
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+  */
   try {
     const reviews = await listStoreReviews(
       parseInt(req.params.storeId),
@@ -52,6 +149,43 @@ export const handleListStoreReviews = async (req, res, next) => {
 
 //가게 미션 조회
 export const handleListStoreMissions = async (req, res, next) => {
+  /*
+    #swagger.tags = ['Stores'];
+    #swagger.summary = '상점 미션 목록 조회 API';
+    #swagger.responses[200] = {
+      description: "상점 미션 목록 조회 성공 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "SUCCESS" },
+              error: { type: "object", nullable: true, example: null },
+              success: {
+                type: "object",
+                properties: {
+                  data: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: { type: "number" },
+                        missionSpec: { type: "string" },
+                        store: { type: "object", properties: { id: { type: "number" }, name: { type: "string" } } },
+                        reward: { type: "number" },
+                        deadline: { type: "string", format: "date" }
+                      }
+                    }
+                  },
+                  pagination: { type: "object", properties: { cursor: { type: "number", nullable: true } }}
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+  */
   try {
     const missions = await listStoreMissions(
       parseInt(req.params.storeId),
