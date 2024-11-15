@@ -84,7 +84,7 @@ export const handleStoreAdd = async (req, res, next) => {
 };
 
 //가게 리뷰 작성
-export const handleReviewWrite = async (req, res) =>{
+export const handleReviewWrite = async (req, res, next) =>{
   /*
     #swagger.tags = ['Stores'];
     #swagger.summary = '가게 리뷰 작성 API';
@@ -161,7 +161,7 @@ export const handleReviewWrite = async (req, res) =>{
 };
 
 //가게 미션 추가
-export const handleStoreMisAdd = async (req, res) =>{
+export const handleStoreMisAdd = async (req, res, next) =>{
   /*
     #swagger.tags = ['Stores'];
     #swagger.summary = '가게 미션 추가 API';
