@@ -1,4 +1,5 @@
 export class NotFoundError extends Error {
+    statusCode = 400;
     errorCode = "4001_DATA_NOT_FOUND";
 
     constructor(reason, data) {
@@ -9,6 +10,7 @@ export class NotFoundError extends Error {
 }
 
 export class DuplicateUserEmailError extends Error {
+    statusCode = 400;
     errorCode = "4002_USER_DUPLICATE";
 
     constructor(reason, data) {
@@ -19,7 +21,8 @@ export class DuplicateUserEmailError extends Error {
 }
 
 export class InvalidDate extends Error {
-    errorCode = "4002_INVALID_DATE";
+    statusCode = 400;
+    errorCode = "4003_INVALID_DATE";
 
     constructor(reason, data) {
         super(reason);
@@ -29,7 +32,8 @@ export class InvalidDate extends Error {
 }
 
 export class InvalidMission extends Error {
-    errorCode = "4002_INVALID_MISSION";
+    statusCode = 400;
+    errorCode = "4004_INVALID_MISSION";
 
     constructor(reason, data) {
         super(reason);

@@ -80,12 +80,12 @@ export const handleUserSignUp = async (req, res, next) => {
     const user = await userSignUp(bodyToUser(req.body));
     res.status(StatusCodes.OK).success({ result: user });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
 
 //유저 미션 추가
-export const handleUserMisAdd = async (req, res) => { 
+export const handleUserMisAdd = async (req, res, next) => { 
   /*
     #swagger.tags = ['Users'];
     #swagger.summary = '유저 미션 추가 API';
@@ -153,7 +153,7 @@ export const handleUserMisAdd = async (req, res) => {
     const userMis = await userMisAdd(requestUserMisAdd(req.body));
     res.status(StatusCodes.OK).success({ result: userMis });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
 
@@ -227,7 +227,7 @@ export const handleListUserReviews = async (req, res, next) => {
   
     res.status(StatusCodes.OK).success({ result: responseFromReviews(reviews) });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
 
@@ -302,6 +302,6 @@ export const handleListUserMissions = async (req, res, next) => {
   
     res.status(StatusCodes.OK).success({ result: responseFromMissions(missions) });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };

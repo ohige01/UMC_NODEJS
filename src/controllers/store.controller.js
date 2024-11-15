@@ -79,7 +79,7 @@ export const handleStoreAdd = async (req, res, next) => {
     const store = await storeAdd(bodyToStore(req.body));
     res.status(StatusCodes.OK).success({ result: store });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
 
@@ -156,7 +156,7 @@ export const handleReviewWrite = async (req, res) =>{
     const review = await reviewWrite(requestReviewWrite(req.body));
     res.status(StatusCodes.OK).success({ result: review });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
 
@@ -232,7 +232,7 @@ export const handleStoreMisAdd = async (req, res) =>{
     const mission = await storeMisAdd(requestStoreMisAdd(req.body));
     res.status(StatusCodes.OK).success({ mission: mission });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
 
@@ -305,7 +305,7 @@ export const handleListStoreReviews = async (req, res, next) => {
 
     res.status(StatusCodes.OK).success(responseFromReviews(reviews));
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
 
@@ -379,6 +379,6 @@ export const handleListStoreMissions = async (req, res, next) => {
   
     res.status(StatusCodes.OK).json({ result: responseFromMissions(missions) });
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).error(error);
+    next(error);
   }
 };
