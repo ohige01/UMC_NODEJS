@@ -64,7 +64,7 @@ export const handleUserSignUp = async (req, res, next) => {
               error: {
                 type: "object",
                 properties: {
-                  errorCode: { type: "string", example: "U001" },
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
                   reason: { type: "string" },
                   data: { type: "object" }
                 }
@@ -98,6 +98,29 @@ export const handleUserMisAdd = async (req, res) => {
             properties: {
               userId: { type: "number" },
               missionId: { type: "number" }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[200] = {
+      description: "유저 미션 추가 성공 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "SUCCESS" },
+              error: { type: "object", nullable: true, example: null },
+              success: {
+                type: "object",
+                properties: {
+                  id: { type: "number" },
+                  missionId: { type: "number" },
+                  memberId: { type: "number" },
+                  status: { type: "string", default: "Challenge" }
+                }
+              }
             }
           }
         }

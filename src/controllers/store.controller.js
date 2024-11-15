@@ -20,7 +20,33 @@ export const handleStoreAdd = async (req, res, next) => {
               name: { type: "string" },
               location: { type: "string" },
               infoImg: { type: "string" },
-              category: { type: "array", items: { type: "string" } }
+              category: { type: "string" }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[200] = {
+      description: "가게 추가 성공 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "SUCCESS" },
+              error: { type: "object", nullable: true, example: null },
+              success: {
+                type: "object",
+                properties: {
+                  id: { type: "number" },
+                  regionId: { type: "number" },
+                  categoryId: { type: "number" },
+                  name: { type: "string" },
+                  address: { type: "string" },
+                  score: { type: "number", format: "float", default: 0.1 },
+                  imageUrl: { type: "string" }
+                }
+              }
             }
           }
         }
@@ -49,9 +75,33 @@ export const handleReviewWrite = async (req, res) =>{
             properties: {
               storeId: { type: "number" },
               userId: { type: "number" },
-              rate: { type: "number", format: "float" },
+              rate: { type: "number", format: "float", default: 4.5 },
               text: { type: "string" },
               reviewImg: { type: "string" }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[200] = {
+      description: "가게 리뷰 작성 성공 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "SUCCESS" },
+              error: { type: "object", nullable: true, example: null },
+              success: {
+                type: "object",
+                properties: {
+                  id: { type: "number" },
+                  memberId: { type: "number" },
+                  storeId: { type: "number" },
+                  body: { type: "string" },
+                  score: { type: "number"}
+                }
+              }
             }
           }
         }
@@ -82,6 +132,30 @@ export const handleStoreMisAdd = async (req, res) =>{
               missionSpec: { type: "string" },
               reward: { type: "number" },
               deadline: { type: "string", format: "date" }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[200] = {
+      description: "가게 추가 성공 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "SUCCESS" },
+              error: { type: "object", nullable: true, example: null },
+              success: {
+                type: "object",
+                properties: {
+                  id: { type: "number" },
+                  storeId: { type: "number" },
+                  reward: { type: "number" },
+                  deadline: { type: "string", format: "date" },
+                  missionSpec: { type: "string" }
+                }
+              }
             }
           }
         }

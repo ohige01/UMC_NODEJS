@@ -63,6 +63,7 @@ export const addUserMis = async (data) => {
   //도전중인 미션 확인
   const confirm = await prisma.memberMission.findFirst({
     where: {
+      memberId: data.userId,
       missionId: data.missionId,
       status: "Challenge"
     }
