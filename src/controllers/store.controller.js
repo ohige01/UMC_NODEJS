@@ -52,6 +52,28 @@ export const handleStoreAdd = async (req, res, next) => {
         }
       }
     };
+    #swagger.responses[400] = {
+      description: "가게 추가 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
+            }
+          }
+        }
+      }
+    };
   */
   try {
     const store = await storeAdd(bodyToStore(req.body));
@@ -102,6 +124,28 @@ export const handleReviewWrite = async (req, res) =>{
                   score: { type: "number"}
                 }
               }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[400] = {
+      description: "가게 리뷰 작성 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
             }
           }
         }
@@ -161,6 +205,28 @@ export const handleStoreMisAdd = async (req, res) =>{
         }
       }
     };
+    #swagger.responses[400] = {
+      description: "가게 미션 추가 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
+            }
+          }
+        }
+      }
+    };
   */
   try {
     const mission = await storeMisAdd(requestStoreMisAdd(req.body));
@@ -202,6 +268,28 @@ export const handleListStoreReviews = async (req, res, next) => {
                   pagination: { type: "object", properties: { cursor: { type: "number", nullable: true } }}
                 }
               }
+            }
+          }
+        }
+      }
+    };
+      #swagger.responses[400] = {
+      description: "상점 리뷰 목록 조회 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
             }
           }
         }
@@ -254,6 +342,28 @@ export const handleListStoreMissions = async (req, res, next) => {
                   pagination: { type: "object", properties: { cursor: { type: "number", nullable: true } }}
                 }
               }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[400] = {
+      description: "상점 미션 목록 조회 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
             }
           }
         }

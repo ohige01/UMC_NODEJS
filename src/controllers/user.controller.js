@@ -126,6 +126,28 @@ export const handleUserMisAdd = async (req, res) => {
         }
       }
     };
+    #swagger.responses[400] = {
+      description: "유저 미션 추가 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
+            }
+          }
+        }
+      }
+    };
   */
   try {
     const userMis = await userMisAdd(requestUserMisAdd(req.body));
@@ -168,6 +190,28 @@ export const handleListUserReviews = async (req, res, next) => {
                   pagination: { type: "object", properties: { cursor: { type: "number", nullable: true } }}
                 }
               }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[400] = {
+      description: "유저 리뷰 목록 조회 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
             }
           }
         }
@@ -221,6 +265,28 @@ export const handleListUserMissions = async (req, res, next) => {
                   pagination: { type: "object", properties: { cursor: { type: "number", nullable: true } }}
                 }
               }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[400] = {
+      description: "유저 미션 조회 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
             }
           }
         }
