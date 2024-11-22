@@ -9,8 +9,8 @@ export const bodyToUser = (body) => {
       gender: body.gender,
       birth: birth,
       address: body.address || "",
-      detailAddress: body.detailAddress || "",
-      phoneNumber: body.phoneNumber,
+      specAddress: body.specAddress || "",
+      phoneNum: body.phoneNum,
       preferences: body.preferences
     };
   };
@@ -31,5 +31,20 @@ export const requestUserMisAdd = (body) => {
   return {
     userId: body.userId,
     missionId: body.missionId
+  };
+};
+//editUser Request Dto
+export const requestUserEdit = (body) => {
+  const birth = new Date(body.birth);
+
+  return {
+    password: body.password,
+    name: body.name,
+    gender: body.gender,
+    birth: birth,
+    address: body.address,
+    specAddress: body.specAddress,
+    phoneNum: body.phoneNum,
+    preferences: body.preferences
   };
 };

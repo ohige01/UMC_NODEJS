@@ -3,7 +3,7 @@ import cors from "cors"   //cors 관리 모듈
 import express from "express";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUiExpress from "swagger-ui-express";
-import { handleListUserMissions, handleListUserReviews, handleUserMisAdd, handleUserSignUp } from "./controllers/user.controller.js";
+import { handleListUserMissions, handleListUserReviews, handleUserEdit, handleUserMisAdd, handleUserSignUp } from "./controllers/user.controller.js";
 import { handleListStoreMissions, handleListStoreReviews, handleReviewWrite, handleStoreAdd, handleStoreMisAdd } from "./controllers/store.controller.js";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import session from "express-session";
@@ -131,7 +131,8 @@ app.get(
 );
 
 //user
-app.post("/api/v1/users/signup", handleUserSignUp);
+app.post("/api/v1/users", handleUserSignUp);
+app.patch("/api/v1/users/:userId", handleUserEdit);
 app.post("/api/v1/users/missions", handleUserMisAdd);
 app.get("/api/v1/users/:userId/reviews", handleListUserReviews);
 app.get("/api/v1/users/:userId/missions", handleListUserMissions);

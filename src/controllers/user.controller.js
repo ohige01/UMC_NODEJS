@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-import { bodyToUser, requestUserMisAdd } from "../dtos/user.dto.js";
-import { listUserMissions, userMisAdd, userSignUp } from "../services/user.service.js";
+import { bodyToUser, requestUserEdit, requestUserMisAdd } from "../dtos/user.dto.js";
+import { listUserMissions, userEdit, userMisAdd, userSignUp } from "../services/user.service.js";
 import { listUserReviews } from "../services/review.service.js";
 import { responseFromReviews } from "../dtos/review.dto.js";
 import { responseFromMissions } from "../dtos/mission.dto.js";
@@ -301,6 +301,84 @@ export const handleListUserMissions = async (req, res, next) => {
     );
   
     res.status(StatusCodes.OK).success({ result: responseFromMissions(missions) });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//회원 정보 수정
+export const handleUserEdit = async (req, res, next) => {
+  /*
+    #swagger.tags = ['Users'];
+    #swagger.summary = '회원 정보 수정 API';
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              name: { type: "string" },
+              password: { type: "string" },
+              gender: { type: "string" },
+              birth: { type: "string", format: "date" },
+              address: { type: "string" },
+              specAddress: { type: "string" },
+              phoneNum: { type: "string" },
+              preferences: { type: "array", items: { type: "string" } }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[200] = {
+      description: "회원 정보 수정 성공 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "SUCCESS" },
+              error: { type: "object", nullable: true, example: null },
+              success: {
+                type: "object",
+                properties: {
+                  email: { type: "string" },
+                  name: { type: "string" },
+                  preferCategory: { type: "array", items: { type: "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+    #swagger.responses[400] = {
+      description: "회원 정보 수정 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "4001_DATA_NOT_FOUND" },
+                  reason: { type: "string" },
+                  data: { type: "object" }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
+            }
+          }
+        }
+      }
+    };
+  */
+  try {
+    const user = await userEdit(parseInt(req.params.userId), requestUserEdit(req.body));
+    res.status(StatusCodes.OK).success({ result: user });
   } catch (error) {
     next(error);
   }
