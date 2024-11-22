@@ -8,12 +8,13 @@ import { handleListStoreMissions, handleListStoreReviews, handleReviewWrite, han
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import session from "express-session";
 import passport from "passport";
-import { googleStrategy } from "./auth.config.js";
+import { googleStrategy, kakaoStrategy } from "./auth.config.js";
 import { prisma } from "./db.config.js";
 
 dotenv.config();    //config()를 호출해 env에 있는 내용 접근
 
 passport.use(googleStrategy);
+passport.use(kakaoStrategy);
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
@@ -46,7 +47,7 @@ app.use(express.urlencoded({ extended: false })); // 단순 객체 문자열 형
 app.use(                                    //세션 설정
   session({
     cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+      maxAge: 7 * 24 * 60 * 60 * 1000, // ms(일주일)
     },
     resave: false,
     saveUninitialized: false,
@@ -102,11 +103,28 @@ app.get("/openapi.json", async (req, res, next) => {
 });
 
 //google OAuth
-app.get("/oauth2/login/google", passport.authenticate("google"));
+app.get("/oauth2/login/google",
+  // #swagger.ignore = true
+  passport.authenticate("google"));
 app.get(
   "/oauth2/callback/google",
+  // #swagger.ignore = true
   passport.authenticate("google", {
     failureRedirect: "/oauth2/login/google",
+    failureMessage: true,
+  }),
+  (req, res) => res.redirect("/")
+);
+
+//kakao OAuth
+app.get("/oauth2/login/kakao", 
+  // #swagger.ignore = true
+  passport.authenticate("kakao"));
+app.get(
+  "/oauth2/callback/kakao",
+  // #swagger.ignore = true
+  passport.authenticate("kakao", {
+    failureRedirect: "/oauth2/login/kakao",
     failureMessage: true,
   }),
   (req, res) => res.redirect("/")
