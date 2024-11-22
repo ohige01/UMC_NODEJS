@@ -23,8 +23,8 @@ export const handleUserSignUp = async (req, res, next) => {
               gender: { type: "string" },
               birth: { type: "string", format: "date" },
               address: { type: "string" },
-              detailAddress: { type: "string" },
-              phoneNumber: { type: "string" },
+              specAddress: { type: "string" },
+              phoneNum: { type: "string" },
               preferences: { type: "array", items: { type: "string" } }
             }
           }

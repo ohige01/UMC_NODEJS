@@ -137,3 +137,12 @@ model ReviewImage {
   @@index([storeId], map: "store_id")
   @@map("review_image")
 }
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.VarChar(512)
+  expiresAt DateTime @map("expires_at")
+
+  @@map("session")
+}
