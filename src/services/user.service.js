@@ -3,6 +3,7 @@ import { NotFoundError } from "../error.js";
 import { addUserMis, getStoreMission, getUserMission_MissionID, getUserMissionAll } from "../repositories/mission.repository.js";
 import {
   addUser,
+  editUser,
   getUser,
   getUserPreferencesByUserId,
   setPreference,
@@ -17,8 +18,8 @@ export const userSignUp = async (data) => {
     gender: data.gender,
     birth: data.birth,
     address: data.address,
-    specAddress: data.detailAddress,
-    phoneNum: data.phoneNumber
+    specAddress: data.specAddress,
+    phoneNum: data.phoneNum
   });
 
   if (joinUserId === null) {
@@ -58,12 +59,39 @@ export const userMisAdd = async (data) => {
 
 //유저 미션 조회 
 export const listUserMissions = async (userId, cursor) => {
-  //유효한 가게 아이디인지 판별
+  //유효한 유저 아이디인지 판별
   const user = await getUser(userId);
   if(user == null)
-      throw new NotFoundError("존재하지 않은 가게입니다. req:" + userId);
+      throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId);
 
   //미션 조회
   const missions = await getUserMissionAll(userId, cursor);
   return missions;
+};
+
+//유저 정보 수정
+export const userEdit = async (userId, data) => {
+  //유효한 유저 아이디인지 판별
+  const confirm = await getUser(userId);
+  if(confirm == null)
+      throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId);
+
+  const editUserId = await editUser(userId, {
+    password: data.password,
+    name: data.name,
+    gender: data.gender,
+    birth: data.birth,
+    address: data.address,
+    specAddress: data.specAddress,
+    phoneNum: data.phoneNum
+  });
+
+  for (const preference of data.preferences) {
+    await setPreference(editUserId, preference);
+  }
+
+  const user = await getUser(editUserId);
+  const preferences = await getUserPreferencesByUserId(editUserId);
+
+  return responseFromUser({ user, preferences });
 };

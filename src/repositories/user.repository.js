@@ -19,6 +19,9 @@ export const getUser = async (userId) => {
 //음식 선호 카테고리 매핑
 export const setPreference = async (userId, foodCategory) => {
   const foodCategoryDB = await prisma.foodCategory.findFirstOrThrow({where: {name: foodCategory}});
+
+  //매핑하기 전 기존에 존재한 정보 삭제
+  await prisma.memberPrefer.deleteMany({ where: { memberId: userId } });
   await prisma.memberPrefer.create({
     data: {
       memberId: userId,
@@ -41,4 +44,18 @@ export const getUserPreferencesByUserId = async (userId) => {
   });
 
   return preferences;
+};
+
+// User 데이터 수정
+export const editUser = async (userId, data) => {
+  //속성 값이 주어지지 않는 경우 해당 속성 삭제
+  Object.keys(data).map((key) => {
+    if(!data[key] && data[key] != false)
+      delete data[key];
+  });
+
+  const updated = await prisma.member.update({ 
+    where: { id: userId },
+    data: data });
+  return updated.id;
 };
