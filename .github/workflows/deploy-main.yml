@@ -23,7 +23,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           cat >>~/.ssh/config <<END
-          Host playground-umc-7th
+          Host umc-7th-workbook
             HostName $EC2_HOST
             User $EC2_USER
             IdentityFile ~/.ssh/id_rsa
@@ -36,17 +36,17 @@ jobs:
 
       - name: Copy Workspace
         run: |
-          ssh UMC-7th-Workbook 'sudo mkdir -p /opt/app'
-          ssh UMC-7th-Workbook 'sudo chown ubuntu:ubuntu /opt/app'
+          ssh umc-7th-workbook 'sudo mkdir -p /opt/app'
+          ssh umc-7th-workbook 'sudo chown ubuntu:ubuntu /opt/app'
           scp -r ./[!.]* UMC-7th-Workbook:/opt/app
 
       - name: Install dependencies
         run: |
-          ssh UMC-7th-Workbook 'npm install --prefix /opt/app/'
+          ssh umc-7th-workbook 'npm install --prefix /opt/app/'
 
       - name: Copy systemd service file
         run: |
-          ssh UMC-7th-Workbook '
+          ssh umc-7th-workbook '
             echo "[Unit]
             Description=UMC 7th Project
             After=network.target
@@ -62,8 +62,8 @@ jobs:
 
       - name: Enable systemd service
         run: |
-          ssh UMC-7th-Workbook 'sudo systemctl daemon-reload'
-          ssh UMC-7th-Workbook 'sudo systemctl enable app'
+          ssh umc-7th-workbook 'sudo systemctl daemon-reload'
+          ssh umc-7th-workbook 'sudo systemctl enable app'
 
       - name: Restart systemd service
         run: |
