@@ -1,0 +1,70 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: deploy-main
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          cat >>~/.ssh/config <<END
+          Host playground-umc-7th
+            HostName $EC2_HOST
+            User $EC2_USER
+            IdentityFile ~/.ssh/id_rsa
+            StrictHostKeyChecking no
+          END
+        env:
+          EC2_USER: ubuntu
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Copy Workspace
+        run: |
+          ssh UMC-7th-Workbook 'sudo mkdir -p /opt/app'
+          ssh UMC-7th-Workbook 'sudo chown ubuntu:ubuntu /opt/app'
+          scp -r ./[!.]* UMC-7th-Workbook:/opt/app
+
+      - name: Install dependencies
+        run: |
+          ssh UMC-7th-Workbook 'npm install --prefix /opt/app/'
+
+      - name: Copy systemd service file
+        run: |
+          ssh UMC-7th-Workbook '
+            echo "[Unit]
+            Description=UMC 7th Project
+            After=network.target
+
+            [Service]
+            User=${USER}
+            ExecStart=/usr/bin/npm run dev --prefix /opt/app/
+            Restart=always
+
+            [Install]
+            WantedBy=multi-user.target" | sudo tee /etc/systemd/system/app.service
+          '
+
+      - name: Enable systemd service
+        run: |
+          ssh UMC-7th-Workbook 'sudo systemctl daemon-reload'
+          ssh UMC-7th-Workbook 'sudo systemctl enable app'
+
+      - name: Restart systemd service
+        run: |
+          ssh UMC-7th-Workbook 'sudo systemctl restart app'
