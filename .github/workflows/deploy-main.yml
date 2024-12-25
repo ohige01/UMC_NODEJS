@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+        
       - name: Check prisma has changes
         uses: dorny/paths-filter@v3
         id: paths-filter
@@ -27,7 +27,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           cat >>~/.ssh/config <<END
-          Host playground-umc-7th
+          Host umc-7th-workbook
             HostName $EC2_HOST
             User $EC2_USER
             IdentityFile ~/.ssh/id_rsa
@@ -40,23 +40,23 @@ jobs:
 
       - name: Copy Workspace
         run: |
-          ssh playground-umc-7th 'sudo mkdir -p /opt/app'
-          ssh playground-umc-7th 'sudo chown ubuntu:ubuntu /opt/app'
-          scp -r ./[!.]* playground-umc-7th:/opt/app
+          ssh umc-7th-workbook 'sudo mkdir -p /opt/app'
+          ssh umc-7th-workbook 'sudo chown ubuntu:ubuntu /opt/app'
+          scp -r ./[!.]* umc-7th-workbook:/opt/app
 
       - name: Install dependencies
         run: |
-          ssh playground-umc-7th 'cd /opt/app; npm install'
-          ssh playground-umc-7th 'cd /opt/app; npm exec prisma generate'
+          ssh umc-7th-workbook 'npm install --prefix /opt/app/'
+          ssh umc-7th-workbook 'cd /opt/app; npm exec prisma generate'
 
       - name: Apply prisma migrations
         if: steps.paths-filter.outputs.prisma == 'true'
         run: |
-          ssh playground-umc-7th 'cd /opt/app; npm exec prisma migrate deploy'
-
+          ssh umc-7th-workbook 'cd /opt/app; npm exec prisma migrate deploy'
+          
       - name: Copy systemd service file
         run: |
-          ssh playground-umc-7th '
+          ssh umc-7th-workbook '
             echo "[Unit]
             Description=UMC 7th Project
             After=network.target
@@ -72,9 +72,9 @@ jobs:
 
       - name: Enable systemd service
         run: |
-          ssh playground-umc-7th 'sudo systemctl daemon-reload'
-          ssh playground-umc-7th 'sudo systemctl enable app'
+          ssh umc-7th-workbook 'sudo systemctl daemon-reload'
+          ssh umc-7th-workbook 'sudo systemctl enable app'
 
       - name: Restart systemd service
         run: |
-          ssh playground-umc-7th 'sudo systemctl restart app'
+          ssh umc-7th-workbook 'sudo systemctl restart app'
