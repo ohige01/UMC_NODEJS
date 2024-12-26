@@ -11,7 +11,7 @@ export const googleStrategy = new GoogleStrategy(
   {
     clientID: process.env.PASSPORT_GOOGLE_CLIENT_ID,
     clientSecret: process.env.PASSPORT_GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/oauth2/callback/google",
+    callbackURL: "http://43.201.160.91:3000/oauth2/callback/google",
     scope: ["email", "profile"],
     state: true,
   },
@@ -53,7 +53,7 @@ const googleVerify = async (profile) => {
 export const kakaoStrategy = new KakaoStrategy(
     {
       clientID: process.env.PASSPORT_KAKAO_RESTAPI_KEY,
-      callbackURL: "http://localhost:3000/oauth2/callback/kakao"
+      callbackURL: "http://43.201.160.91:3000/oauth2/callback/kakao"
     },
     (accessToken, refreshToken, profile, cb) => {
       return kakaoVerify(profile)
