@@ -13,7 +13,7 @@ import { prisma } from "./db.config.js";
 
 dotenv.config();    //config()를 호출해 env에 있는 내용 접근
 
-passport.use(googleStrategy);
+//passport.use(googleStrategy);
 passport.use(kakaoStrategy);
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
@@ -102,19 +102,19 @@ app.get("/openapi.json", async (req, res, next) => {
   res.json(result ? result.data : null);
 });
 
-//google OAuth
-app.get("/oauth2/login/google",
-  // #swagger.ignore = true
-  passport.authenticate("google"));
-app.get(
-  "/oauth2/callback/google",
-  // #swagger.ignore = true
-  passport.authenticate("google", {
-    failureRedirect: "/oauth2/login/google",
-    failureMessage: true,
-  }),
-  (req, res) => res.redirect("/")
-);
+// //google OAuth
+// app.get("/oauth2/login/google",
+//   // #swagger.ignore = true
+//   passport.authenticate("google"));
+// app.get(
+//   "/oauth2/callback/google",
+//   // #swagger.ignore = true
+//   passport.authenticate("google", {
+//     failureRedirect: "/oauth2/login/google",
+//     failureMessage: true,
+//   }),
+//   (req, res) => res.redirect("/")
+// );
 
 //kakao OAuth
 app.get("/oauth2/login/kakao", 
