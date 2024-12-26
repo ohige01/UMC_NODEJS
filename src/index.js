@@ -8,7 +8,7 @@ import { handleListStoreMissions, handleListStoreReviews, handleReviewWrite, han
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import session from "express-session";
 import passport from "passport";
-import { googleStrategy, kakaoStrategy } from "./auth.config.js";
+import { kakaoStrategy } from "./auth.config.js";
 import { prisma } from "./db.config.js";
 
 dotenv.config();    //config()를 호출해 env에 있는 내용 접근
