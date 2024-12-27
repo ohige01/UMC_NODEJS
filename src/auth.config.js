@@ -4,7 +4,7 @@ import { Strategy as KakaoStrategy } from "passport-kakao";
 import { prisma } from "./db.config.js";
 import { NotFoundError } from "./error.js";
 
-dotenv.config();
+dotenv.config({path: "./.env"});
 
 // //google login
 // export const googleStrategy = new GoogleStrategy(

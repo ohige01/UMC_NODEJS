@@ -11,7 +11,7 @@ import passport from "passport";
 import { kakaoStrategy } from "./auth.config.js";
 import { prisma } from "./db.config.js";
 
-dotenv.config();    //config()를 호출해 env에 있는 내용 접근
+dotenv.config({path: "./.env"});    //config()를 호출해 env에 있는 내용 접근
 
 //passport.use(googleStrategy);
 passport.use(kakaoStrategy);
