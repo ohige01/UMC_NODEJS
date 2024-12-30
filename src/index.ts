@@ -1,6 +1,6 @@
 import dotenv from "dotenv";    //.env 관리 모듈
 import cors from "cors"   //cors 관리 모듈
-import express from "express";
+import express, { Request, Response, Express, NextFunction } from "express";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUiExpress from "swagger-ui-express";
 import { handleListUserMissions, handleListUserReviews, handleUserEdit, handleUserMisAdd, handleUserSignUp } from "./controllers/user.controller.js";
@@ -16,8 +16,9 @@ dotenv.config({path: "./.env"});    //config()를 호출해 env에 있는 내용
 //passport.use(googleStrategy);
 passport.use(kakaoStrategy);
 passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
-
+passport.deserializeUser<{ id: string; email: string; name: string }>(
+  (user, done) => done(null, user)
+);
 const app = express();
 const port = process.env.PORT;
 
@@ -89,7 +90,7 @@ app.get("/openapi.json", async (req, res, next) => {
     writeOutputFile: false,
   };
   const outputFile = "/dev/null"; // 파일 출력은 사용하지 않습니다.
-  const routes = ["./src/index.js"];
+  const routes = ["./src/index.ts"];
   const doc = {
     info: {
       title: "UMC 7th",
@@ -147,7 +148,7 @@ app.get("/api/v1/stores/:storeId/missions", handleListStoreMissions);
 /**
  * 전역 오류를 처리하기 위한 미들웨어
  */
-app.use((err, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {
     return next(err);
   }

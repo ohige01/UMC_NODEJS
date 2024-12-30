@@ -1,5 +1,7 @@
+import { Mission } from "@prisma/client";
+
 //StoreMissionGet Response Dto
-export const responseFromMissions = (missions) => {
+export const responseFromMissions = (missions: any[]) => {
     return {
         data: missions,
         pagination: {

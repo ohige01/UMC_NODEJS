@@ -2,13 +2,13 @@ import { prisma } from "../db.config.js"
 import { InvalidMission } from "../error.js";
 
 //가게 미션 개별 조회
-export const getStoreMission = async (missionId) => {
+export const getStoreMission = async (missionId: number) => {
   const mission = await prisma.mission.findFirst({ where: { id: missionId } });
   return mission;
 };
 
 //가게 미션 전체 조회
-export const getStoreMissionAll = async (storeId, cursor) => {
+export const getStoreMissionAll = async (storeId: number, cursor: number) => {
   //missionId를 index로 설정
   const missions = await prisma.mission.findMany({
     select: { id: true, missionSpec: true, store: true, reward: true, deadline: true },
@@ -21,7 +21,7 @@ export const getStoreMissionAll = async (storeId, cursor) => {
 };
 
 //가게 미션 추가
-export const addStoreMis = async (data) => {
+export const addStoreMis = async (data: any) => {
   const mission = await prisma.mission.create({ data: {
     storeId: data.storeId,
     reward: data.reward,
@@ -33,18 +33,17 @@ export const addStoreMis = async (data) => {
 };
 
 //유저 미션 개별 조회
-export const getUserMission_MissionID = async (missionId) => {
+export const getUserMission_MissionID = async (missionId: number) => {
   const mission = await prisma.memberMission.findFirst({ where: { id: missionId } });
   return mission;
 };
 
 //유저 미션 전체 조회(도전중인 미션)
-export const getUserMissionAll = async (userId, cursor) => {
+export const getUserMissionAll = async (userId: number, cursor: number) => {
   //missionId를 index로 설정
   const missions = await prisma.memberMission.findMany({
     select: { 
       id: true, 
-      mission: true,
       //미션 테이블 내 store 출력 
       mission:{
         select:{ id: true, missionSpec: true, store: true, reward: true, deadline: true } 
@@ -59,7 +58,7 @@ export const getUserMissionAll = async (userId, cursor) => {
 };
 
 //유저 미션 추가
-export const addUserMis = async (data) => {
+export const addUserMis = async (data: any) => {
   //도전중인 미션 확인
   const confirm = await prisma.memberMission.findFirst({
     where: {
@@ -69,7 +68,7 @@ export const addUserMis = async (data) => {
     }
   });
   if(confirm!=null)
-    throw new InvalidMission("도전 중인 미션입니다.");
+    throw new InvalidMission("도전 중인 미션입니다.", null);
 
   //미션 추가
   const mission = await prisma.memberMission.create({

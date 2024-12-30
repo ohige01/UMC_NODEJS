@@ -62,11 +62,11 @@ export const kakaoStrategy = new KakaoStrategy(
     }
 );
 
-const kakaoVerify = async (profile) => {
+const kakaoVerify = async (profile: any) => {
     //profile 객체에서 email 추출
     const email = profile._json.kakao_account.email;
     if (!email) {
-      throw new NotFoundError(`profile.email was not found: ${profile}`);
+      throw new NotFoundError(`profile.email was not found: ${profile}`, null);
     }
     
     //중복된 사용자인지 검사

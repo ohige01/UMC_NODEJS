@@ -1,5 +1,7 @@
+import { Member, Review } from "@prisma/client";
+
 //StoreReviewGet Response Dto
-export const responseFromReviews = (reviews) => {
+export const responseFromReviews = (reviews: (Review & {member: Member})[]) => {
     return {
         data: reviews,
         pagination: {
