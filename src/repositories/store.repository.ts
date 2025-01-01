@@ -1,13 +1,13 @@
 import { prisma } from "../db.config.js"
 
 // 가게 조회
-export const getStore = async (storeId) => {
+export const getStore = async (storeId: number) => {
   const store = await prisma.store.findFirst({ where: { id: storeId } });
   return store;
 };
 
 //가게 추가
-export const addStore = async (data) => {
+export const addStore = async (data: any) => {
   //주소 문자열 파싱
   const location = String(data.location).split(' ');
 
@@ -35,14 +35,14 @@ export const addStore = async (data) => {
 }
 
 //가게 평점 계산
-export const calStoreScore = async (storeId) => {
+export const calStoreScore = async (storeId: number) => {
   //점수 계산
   const cal = await prisma.review.groupBy({
     by: ['storeId'],
     where: { storeId: storeId },
     _avg: { score: true }
   });
-  const score_avg = cal[0]._avg.score;
+  let score_avg = (cal[0]._avg.score ? cal[0]._avg.score : 0);
 
   //계산한 점수 입력
   await prisma.store.update({

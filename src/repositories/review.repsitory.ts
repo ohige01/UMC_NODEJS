@@ -1,13 +1,13 @@
 import { prisma } from "../db.config.js"
 
 // 리뷰 조회(reviewId)
-export const getReview = async (reviewId) => {
+export const getReview = async (reviewId: number) => {
   const review = await prisma.review.findFirstOrThrow({ where: { id: reviewId } });
   return review;
 };
 
 //리뷰 조회(storeId)
-export const getReviewToStoreId = async (storeId, cursor) => {
+export const getReviewToStoreId = async (storeId: number, cursor: number) => {
   //reviewId를 index로 설정
   const reviews = await prisma.review.findMany({
     select: { id: true, body: true, store: true, member: true, score: true },
@@ -20,7 +20,7 @@ export const getReviewToStoreId = async (storeId, cursor) => {
 };
 
 //리뷰 조회(userId)
-export const getReviewToUserId = async (userId, cursor) => {
+export const getReviewToUserId = async (userId: number, cursor: number) => {
   //reviewId를 index로 설정
   const reviews = await prisma.review.findMany({
     select: { id: true, body: true, store: true, member: true, score: true },
@@ -33,7 +33,7 @@ export const getReviewToUserId = async (userId, cursor) => {
 };
 
 //리뷰 작성
-export const writeReview = async (data) =>{
+export const writeReview = async (data: any) =>{
   const review = await prisma.review.create({ data: {
     memberId: data.userId,
     storeId: data.storeId,
@@ -45,7 +45,7 @@ export const writeReview = async (data) =>{
 };
 
 //리뷰 이미지 작성
-export const writeReviewImg = async (data) => {
+export const writeReviewImg = async (data: any) => {
   const review_image = await prisma.reviewImage.create({ data: {
     reviewId: data.reviewId,
     storeId: data.storeId,

@@ -4,15 +4,15 @@ import { calStoreScore, getStore } from "../repositories/store.repository.js";
 import { getUser } from "../repositories/user.repository.js";
 
 //리뷰 작성
-export const reviewWrite = async (data) => {
+export const reviewWrite = async (data: any) => {
     //입력값이 유효한지 검사
     const store = await getStore(data.storeId);
     const user = await getUser(data.userId);
 
     if(user == null)
-        throw new NotFoundError("존재하지 않은 유저입니다. req:" + data.userId);
+        throw new NotFoundError("존재하지 않은 유저입니다. req:" + data.userId, null);
     if(store == null)
-        throw new NotFoundError("존재하지 않은 가게입니다. req:" + data.storeId);
+        throw new NotFoundError("존재하지 않은 가게입니다. req:" + data.storeId, null);
         
     const reviewId = await writeReview({
         storeId: store.id,
@@ -39,22 +39,22 @@ export const reviewWrite = async (data) => {
 };
 
 //가게 리뷰 조회 
-export const listStoreReviews = async (storeId, cursor) => {
+export const listStoreReviews = async (storeId: number, cursor: number) => {
     //유효한 가게 아이디인지 판별
     const store = await getStore(storeId);
     if(store == null)
-        throw new NotFoundError("존재하지 않은 가게입니다. req:" + storeId);
+        throw new NotFoundError("존재하지 않은 가게입니다. req:" + storeId, null);
 
     const reviews = await getReviewToStoreId(storeId, cursor);
     return reviews;
 };
 
 //유저 리뷰 조회 
-export const listUserReviews = async (userId, cursor) => {
+export const listUserReviews = async (userId: number, cursor: number) => {
     //유효한 유저 아이디인지 판별
     const user = await getUser(userId);
     if(user == null)
-        throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId);
+        throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId, null);
 
     const reviews = await getReviewToUserId(userId, cursor);
     return reviews;

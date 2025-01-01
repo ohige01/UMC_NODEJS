@@ -1,5 +1,7 @@
+import { FoodCategory, Member, MemberPrefer } from "@prisma/client";
+
 //signUp Request Dto
-export const bodyToUser = (body) => {
+export const bodyToUser = (body: any) => {
     const birth = new Date(body.birth);
   
     return {
@@ -15,7 +17,10 @@ export const bodyToUser = (body) => {
     };
   };
 //signUp Response Dto
-export const responseFromUser = ({ user, preferences }) => {
+export const responseFromUser = ({ user, preferences }: {
+  user: Member;
+  preferences: (MemberPrefer & { foodCategory: FoodCategory })[];
+}) => {
   const preferFoods = preferences.map(
     (preference) => preference.foodCategory.name
   );
@@ -27,14 +32,14 @@ export const responseFromUser = ({ user, preferences }) => {
   };
 };
 //addUserMis Request Dto
-export const requestUserMisAdd = (body) => {
+export const requestUserMisAdd = (body: any) => {
   return {
     userId: body.userId,
     missionId: body.missionId
   };
 };
 //editUser Request Dto
-export const requestUserEdit = (body) => {
+export const requestUserEdit = (body: any) => {
   const birth = new Date(body.birth);
 
   return {

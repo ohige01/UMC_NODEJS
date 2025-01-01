@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { bodyToUser, requestUserEdit, requestUserMisAdd } from "../dtos/user.dto.js";
 import { listUserMissions, userEdit, userMisAdd, userSignUp } from "../services/user.service.js";
@@ -6,7 +7,11 @@ import { responseFromReviews } from "../dtos/review.dto.js";
 import { responseFromMissions } from "../dtos/mission.dto.js";
 
 //회원 가입
-export const handleUserSignUp = async (req, res, next) => {
+export const handleUserSignUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*
     #swagger.tags = ['Users'];
     #swagger.summary = '회원 가입 API';
@@ -85,7 +90,11 @@ export const handleUserSignUp = async (req, res, next) => {
 };
 
 //유저 미션 추가
-export const handleUserMisAdd = async (req, res, next) => { 
+export const handleUserMisAdd = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => { 
   /*
     #swagger.tags = ['Users'];
     #swagger.summary = '유저 미션 추가 API';
@@ -158,7 +167,11 @@ export const handleUserMisAdd = async (req, res, next) => {
 };
 
 //유저 리뷰 조회
-export const handleListUserReviews = async (req, res, next) => {
+export const handleListUserReviews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*
     #swagger.tags = ['Users'];
     #swagger.summary = '유저 리뷰 목록 조회 API';
@@ -225,14 +238,24 @@ export const handleListUserReviews = async (req, res, next) => {
       typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
     );
   
-    res.status(StatusCodes.OK).success({ result: responseFromReviews(reviews) });
+    const transformedReviews = reviews.map(review => ({
+      ...review,
+      memberId: review.member.id,
+      storeId: review.store.id
+    }));
+
+    res.status(StatusCodes.OK).json({ result: responseFromReviews(transformedReviews) });
   } catch (error) {
     next(error);
   }
 };
 
 //유저 미션 조회
-export const handleListUserMissions = async (req, res, next) => {
+export const handleListUserMissions = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*
     #swagger.tags = ['Users'];
     #swagger.summary = '유저 미션 목록 조회 API';
@@ -299,7 +322,7 @@ export const handleListUserMissions = async (req, res, next) => {
       //cursor 미설정시 0 전달
       typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
     );
-  
+    
     res.status(StatusCodes.OK).success({ result: responseFromMissions(missions) });
   } catch (error) {
     next(error);
@@ -307,7 +330,11 @@ export const handleListUserMissions = async (req, res, next) => {
 };
 
 //회원 정보 수정
-export const handleUserEdit = async (req, res, next) => {
+export const handleUserEdit = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*
     #swagger.tags = ['Users'];
     #swagger.summary = '회원 정보 수정 API';

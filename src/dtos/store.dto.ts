@@ -1,5 +1,5 @@
 //AddStore Request Dto
-export const bodyToStore = (body) => {
+export const bodyToStore = (body: any) => {
 
     return {
         name: body.name,
@@ -10,7 +10,7 @@ export const bodyToStore = (body) => {
 };
 
 //ReviewWrite Request Dto
-export const requestReviewWrite = (body) => {
+export const requestReviewWrite = (body: any) => {
     return{
         storeId: body.storeId,
         userId: body.userId,
@@ -21,7 +21,7 @@ export const requestReviewWrite = (body) => {
 };
 
 //StoreMissionAdd Request Dto
-export const requestStoreMisAdd = (body) => {
+export const requestStoreMisAdd = (body: any) => {
     const deadline = new Date(body.deadline);
     return{
         storeId: body.storeId,

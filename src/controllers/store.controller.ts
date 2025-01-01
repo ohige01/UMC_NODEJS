@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { listStoreReviews, reviewWrite } from "../services/review.service.js";
 import { listStoreMissions, storeAdd, storeMisAdd } from "../services/store.service.js";
@@ -6,7 +7,11 @@ import { responseFromReviews } from "../dtos/review.dto.js";
 import { responseFromMissions } from "../dtos/mission.dto.js";
 
 //가게 추가
-export const handleStoreAdd = async (req, res, next) => {
+export const handleStoreAdd = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*
     #swagger.tags = ['Stores'];
     #swagger.summary = '가게 추가 API';
@@ -84,7 +89,11 @@ export const handleStoreAdd = async (req, res, next) => {
 };
 
 //가게 리뷰 작성
-export const handleReviewWrite = async (req, res, next) =>{
+export const handleReviewWrite = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) =>{
   /*
     #swagger.tags = ['Stores'];
     #swagger.summary = '가게 리뷰 작성 API';
@@ -161,7 +170,11 @@ export const handleReviewWrite = async (req, res, next) =>{
 };
 
 //가게 미션 추가
-export const handleStoreMisAdd = async (req, res, next) =>{
+export const handleStoreMisAdd = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) =>{
   /*
     #swagger.tags = ['Stores'];
     #swagger.summary = '가게 미션 추가 API';
@@ -237,7 +250,11 @@ export const handleStoreMisAdd = async (req, res, next) =>{
 };
 
 //가게 리뷰 조회
-export const handleListStoreReviews = async (req, res, next) => {
+export const handleListStoreReviews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*
     #swagger.tags = ['Stores'];
     #swagger.summary = '상점 리뷰 목록 조회 API';
@@ -302,15 +319,24 @@ export const handleListStoreReviews = async (req, res, next) => {
       //cursor 미설정시 0 전달
       typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
     );
+    const transformedReviews = reviews.map(review => ({
+      ...review,
+      memberId: review.member.id,
+      storeId: review.store.id
+    }));
 
-    res.status(StatusCodes.OK).success(responseFromReviews(reviews));
+    res.status(StatusCodes.OK).json({ result: responseFromReviews(transformedReviews) });
   } catch (error) {
     next(error);
   }
 };
 
 //가게 미션 조회
-export const handleListStoreMissions = async (req, res, next) => {
+export const handleListStoreMissions = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*
     #swagger.tags = ['Stores'];
     #swagger.summary = '상점 미션 목록 조회 API';
@@ -376,8 +402,12 @@ export const handleListStoreMissions = async (req, res, next) => {
       //cursor 미설정시 0 전달
       typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
     );
-  
-    res.status(StatusCodes.OK).json({ result: responseFromMissions(missions) });
+    const transformedMissions = missions.map(missions => ({
+      ...missions,
+      storeId: missions.store.id
+    }));
+
+    res.status(StatusCodes.OK).json({ result: responseFromMissions(transformedMissions) });
   } catch (error) {
     next(error);
   }

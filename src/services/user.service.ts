@@ -10,7 +10,7 @@ import {
 } from "../repositories/user.repository.js";
 
 //회원 가입
-export const userSignUp = async (data) => {
+export const userSignUp = async (data: any) => {
   const joinUserId = await addUser({
     email: data.email,
     password: data.password,
@@ -23,7 +23,7 @@ export const userSignUp = async (data) => {
   });
 
   if (joinUserId === null) {
-    throw new NotFoundError("이미 존재하는 이메일입니다.");
+    throw new NotFoundError("이미 존재하는 이메일입니다.", null);
   }
 
   for (const preference of data.preferences) {
@@ -31,21 +31,24 @@ export const userSignUp = async (data) => {
   }
 
   const user = await getUser(joinUserId);
+  if (user == null) {
+    throw new NotFoundError("유저 정보를 가져올 수 없습니다. req:" + joinUserId, null);
+  }
   const preferences = await getUserPreferencesByUserId(joinUserId);
 
   return responseFromUser({ user, preferences });
 };
 
 //유저 미션 추가
-export const userMisAdd = async (data) => {
+export const userMisAdd = async (data: any) => {
   //유효성 검사
   const user = await getUser(data.userId);
   const storeMis = await getStoreMission(data.missionId);
 
   if(user == null)
-    throw new NotFoundError("존재하지 않은 유저입니다. req:" + data.userId);
+    throw new NotFoundError("존재하지 않은 유저입니다. req:" + data.userId, null);
   if(storeMis == null)
-    throw new NotFoundError("존재하지 않은 미션입니다. req:" + data.missionId);
+    throw new NotFoundError("존재하지 않은 미션입니다. req:" + data.missionId, null);
 
   const userMisId = await addUserMis({
     userId: user.id,
@@ -58,11 +61,11 @@ export const userMisAdd = async (data) => {
 };
 
 //유저 미션 조회 
-export const listUserMissions = async (userId, cursor) => {
+export const listUserMissions = async (userId: number, cursor: number) => {
   //유효한 유저 아이디인지 판별
   const user = await getUser(userId);
   if(user == null)
-      throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId);
+      throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId, null);
 
   //미션 조회
   const missions = await getUserMissionAll(userId, cursor);
@@ -70,11 +73,11 @@ export const listUserMissions = async (userId, cursor) => {
 };
 
 //유저 정보 수정
-export const userEdit = async (userId, data) => {
+export const userEdit = async (userId: number, data: any) => {
   //유효한 유저 아이디인지 판별
   const confirm = await getUser(userId);
   if(confirm == null)
-      throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId);
+      throw new NotFoundError("존재하지 않은 유저입니다. req:" + userId, null);
 
   const editUserId = await editUser(userId, {
     password: data.password,
@@ -91,6 +94,9 @@ export const userEdit = async (userId, data) => {
   }
 
   const user = await getUser(editUserId);
+  if (user == null) {
+    throw new NotFoundError("유저 정보를 가져올 수 없습니다. req:" + editUserId, null);
+  }
   const preferences = await getUserPreferencesByUserId(editUserId);
 
   return responseFromUser({ user, preferences });
